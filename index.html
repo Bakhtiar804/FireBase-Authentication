@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Authetication</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <div class="auth-container">
+        
+        <div class="auth-card active" id="login-screen">
+            <h2 class="card-title">Welcome Back</h2>
+            <p class="subtitle">Log in to access your dashboard</p>
+            
+            <form class="auth-form" onsubmit="event.preventDefault();">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input id="signInEmail" type="email" placeholder="Enter your email" >
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input id="signInPass" type="password" placeholder="Enter your password" >
+                </div>
+                <button id="signInBtn" type="submit" class="btn btn-primary">Log In</button>
+            </form>
+
+            <div class="divider"><span>OR</span></div>
+
+            <button id="googleSignInBtn" class="btn btn-google">
+                <img src="./signin-assets/web_neutral_rd_na@1x.png" alt="Google">
+                Continue with Google
+            </button>
+
+            <p class="footer-text">Don't have an account? <a href="#" onclick="switchScreen('signup-screen')">Sign Up</a></p>
+        </div>
+
+        <div class="auth-card" id="signup-screen">
+            <h2 class="card-title">Create Account</h2>
+            <p class="subtitle">Join us today by creating your account</p>
+            
+            <form class="auth-form" onsubmit="event.preventDefault();">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input id="usename" type="text" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input id="signUpEmail" type="email" placeholder="Enter your email" >
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input id="signUpPass" type="password" placeholder="Create strong password" >
+                </div>
+                <button id="signUpBtn" type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+
+            <div class="divider"><span>OR</span></div>
+
+            <button id="googleSignUpBtn" class="btn btn-google">
+                <img src="./signin-assets/web_neutral_rd_na@1x.png" alt="Google">
+                Sign Up with Google
+            </button>
+
+            <p class="footer-text">Already have an account? <a href="#" onclick="switchScreen('login-screen')">Log In</a></p>
+        </div>
+
+        <div class="auth-card dashboard-card" style="display: none;" id="dashboard-screen">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div>
+                        <h3>Welcome, User!</h3>
+                        <p id="user-email">user@example.com</p>
+                    </div>
+                </div>
+                <button class="btn btn-danger-outline" onclick="switchScreen('login-screen')">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                </button>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="dashboard-content">
+                <h4>Account Settings</h4>
+                <p class="section-desc">Manage your Firebase authentication settings below.</p>
+
+                <div class="settings-grid">
+                    <div class="settings-box">
+                        <div class="box-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <h5>Change Email</h5>
+                        <p>Update your current login email identity.</p>
+                        <button class="btn btn-secondary" onclick="switchScreen('settings-screen')">Update Email</button>
+                    </div>
+
+                    <div class="settings-box">
+                        <div class="box-icon"><i class="fa-solid fa-lock"></i></div>
+                        <h5>Change Password</h5>
+                        <p>Secure your account with a new password.</p>
+                        <button class="btn btn-secondary" onclick="switchScreen('settings-screen')">Update Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-card" id="settings-screen">
+            <h2>Account Security</h2>
+            <p class="subtitle">Update your credentials securely</p>
+            
+            <form class="auth-form" onsubmit="event.preventDefault();">
+                <div class="input-group">
+                    <label>New Email Address</label>
+                    <input  type="email" placeholder="Enter new email">
+                </div>
+
+                <div class="input-group">
+                    <label>New Password</label>
+                    <input type="password" placeholder="Enter new password">
+                </div>
+                
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-ghost" onclick="switchScreen('dashboard-screen')">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script >
+        function switchScreen(screenId) {
+            document.querySelectorAll('.auth-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+        
+        // Testing purpose ke liye direct dashboard check karne ke liye Console me switchScreen('dashboard-screen') likhen.
+    </script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>

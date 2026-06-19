@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <div class="auth-card dashboard-card active" id="user-dashboard-screen" >
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                <div>
+                    <h3>Welcome, User!</h3>
+                    <p id="user-email">Loading email...</p>
+                </div>
+            </div>
+            <button class="btn btn-danger-outline" id="signOutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            </button>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="dashboard-content">
+            <h4>Account Settings</h4>
+            <p class="section-desc">Manage your Firebase authentication settings below.</p>
+
+            <div class="settings-grid">
+                
+                <div class="settings-box">
+                    <div class="box-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <h5>Change Email</h5>
+                    <p>Update your current login email identity.</p>
+                    <div class="input-group">
+                        <input type="email" id="newEmail" placeholder="Enter new email">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="updateEmailBtn" style="margin-top: 15px; width: 100%;">Update Email</button>
+                </div>
+
+                <div class="settings-box">
+                    <div class="box-icon"><i class="fa-solid fa-lock"></i></div>
+                    <h5>Change Password</h5>
+                    <p>Enter a new password.</p>
+                    <div class="input-group">
+                        <input type="password" id="newPassword" placeholder="Enter new password">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="updatePassBtn" style="margin-top: 15px; width: 100%;">Update Password</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="DashBoard.js"></script>
+</body>
+</html>
