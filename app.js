@@ -95,9 +95,9 @@ const signUp = () => {
   document.getElementById('signUpEmail').value = "";
   document.getElementById('signUpPass').value = "";
 }
-setTimeout(() => {
+
 signUpBtn.addEventListener('click', signUp);
-}, 4000);
+
 
 
 let signInBtn = document.getElementById('signInBtn');
