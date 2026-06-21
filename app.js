@@ -51,15 +51,10 @@ const signUp = () => {
           ...signUpUser, userId
         });
 
+        setTimeout(() => {  
+          window.location.replace("dashBoard.html");
+        }, 3000);
         console.log("new user-->", newUser);
-
-      } catch (error) {
-        console.log(error)
-      }
-
-      // Signed up 
-
-
 
       // Compact Success Alert
       Swal.fire({
@@ -69,8 +64,21 @@ const signUp = () => {
         width: '320px',
         timer: 1500,
         showConfirmButton: false
+      }) .then(() => {
+        window.location.replace("dashBoard.html");
       });
-    })
+  
+
+      } catch (error) {
+        console.log(error)
+      }
+
+      // Signed up 
+
+
+
+
+      })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -96,6 +104,8 @@ const signUp = () => {
   document.getElementById('signUpPass').value = "";
 }
 
+let isSignUP = false;
+
 signUpBtn.addEventListener('click', signUp);
 
 
@@ -103,6 +113,8 @@ signUpBtn.addEventListener('click', signUp);
 let signInBtn = document.getElementById('signInBtn');
 
 const signIn = () => {
+
+
 
   let email = signInEmail.value;
   let password = signInPassword.value;
@@ -136,8 +148,7 @@ const signIn = () => {
         confirmButtonColor: '#3085d6'
       });
     });
-  document.getElementById('signInEmail').value = "";
-  document.getElementById('signInPass').value = "";
+
 }
 
 
@@ -216,13 +227,12 @@ continueGoogleBtn.addEventListener('click', continueWithGoogle);
 
 
 
-
-
-
-
-
 onAuthStateChanged(auth, (user) => {
-  if (user) {
+
+  const path = window.location.pathname;
+  const isAuthPage = path.endsWith('index.html') || path.endsWith('signUp.html');
+
+  if (user && isAuthPage && ! isSignUP) {
     window.location.replace("dashBoard.html");
   }
 });

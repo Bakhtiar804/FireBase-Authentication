@@ -6,7 +6,13 @@
  import { getFirestore , doc, setDoc  , collection ,  addDoc} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
-
+    apiKey: "AIzaSyD_pBmBtsuiNWtyVvo3QmrWp-sI2rmqJ_Q",
+    authDomain: "e-commerce-bakhtiar.firebaseapp.com",
+    projectId: "e-commerce-bakhtiar",
+    storageBucket: "e-commerce-bakhtiar.firebasestorage.app",
+    messagingSenderId: "53846360369",
+    appId: "1:53846360369:web:9a67d948b6c0cb2b173010",
+    measurementId: "G-RP1FLCLRBX"
   };
 
   // Initialize Firebase
