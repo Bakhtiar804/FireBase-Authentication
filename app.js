@@ -1,12 +1,27 @@
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,  updateEmail, updatePassword , onAuthStateChanged , GoogleAuthProvider , getRedirectResult , signInWithPopup} from "./fireBaseConfig.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateEmail, updatePassword, onAuthStateChanged, GoogleAuthProvider, getRedirectResult, signInWithPopup, db, doc, setDoc, collection, addDoc } from "./fireBaseConfig.js";
 
 
+//   Sign Up Info
 
-let userName = document.getElementById('usename');
+let userName = document.getElementById('username');
+let PhoneNumber = document.getElementById('signUpPhone');
+let countryName = document.getElementById('signUpCountry');
+let DOB = document.getElementById('signUpDOB');
 let signUpEmail = document.getElementById('signUpEmail');
 let signUpPassword = document.getElementById('signUpPass');
-let signUpBtn = document.getElementById('signUpBtn');
 
+
+
+//   Login Info
+
+let signInEmail = document.getElementById('signInEmail');
+let signInPassword = document.getElementById('signInPass');
+
+
+
+
+
+let signUpBtn = document.getElementById('signUpBtn');
 
 
 const signUp = () => {
@@ -16,12 +31,35 @@ const signUp = () => {
   let password = signUpPassword.value;
 
 
-  createUserWithEmailAndPassword(auth, email, password)
 
-    .then((userCredential) => {
+  const signUpUser = {
+    FullName: userName.value,
+    Phone: PhoneNumber.value,
+    Country: countryName.value,
+    DateOfBirth: DOB.value,
+    Email: signUpEmail.value
+  }
+
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(async (userCredential) => {
+      try {
+        const user = userCredential.user;
+        const userId = user.uid;
+
+        const newUser = await setDoc(doc(db, "users", userId), {
+          ...signUpUser, userId
+        });
+
+        console.log("new user-->", newUser);
+
+      } catch (error) {
+        console.log(error)
+      }
+
       // Signed up 
-      const user = userCredential.user;
-      console.log(user);
+
+
 
       // Compact Success Alert
       Swal.fire({
@@ -54,20 +92,15 @@ const signUp = () => {
       });
     });
 
-    document.getElementById('signUpEmail').value = "";
-    document.getElementById('signUpPass').value = "";
+  document.getElementById('signUpEmail').value = "";
+  document.getElementById('signUpPass').value = "";
 }
-
+setTimeout(() => {
 signUpBtn.addEventListener('click', signUp);
+}, 4000);
 
 
-
-
-
-let signInEmail = document.getElementById('signInEmail');
-let signInPassword = document.getElementById('signInPass');
 let signInBtn = document.getElementById('signInBtn');
-
 
 const signIn = () => {
 
@@ -85,7 +118,7 @@ const signIn = () => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-  
+
 
       let errorText = "Authentication failed.";
       if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
@@ -103,8 +136,8 @@ const signIn = () => {
         confirmButtonColor: '#3085d6'
       });
     });
-    document.getElementById('signInEmail').value = "";
-    document.getElementById('signInPass').value = "";
+  document.getElementById('signInEmail').value = "";
+  document.getElementById('signInPass').value = "";
 }
 
 
@@ -119,57 +152,57 @@ let continueGoogleSignUpBtn = document.getElementById('googleSignUpBtn');
 
 const continueWithGoogle = () => {
 
-const provider = new GoogleAuthProvider();
+  const provider = new GoogleAuthProvider();
 
-signInWithPopup(auth, provider)
-  .then((result) => {
-    
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-   
-    const user = result.user;
+  signInWithPopup(auth, provider)
+    .then((result) => {
 
-    // Compact Success Alert for Google Sign-In
-    Swal.fire({
-      icon: 'success',
-      title: 'Welcome!',
-      text: 'Google login successful.',
-      width: '300px',
-      timer: 1500,
-      showConfirmButton: false
-    }).then(() => {
-      window.location.replace("dashBoard.html");
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+
+      const user = result.user;
+
+      // Compact Success Alert for Google Sign-In
+      Swal.fire({
+        icon: 'success',
+        title: 'Welcome!',
+        text: 'Google login successful.',
+        width: '300px',
+        timer: 1500,
+        showConfirmButton: false
+      }).then(() => {
+        window.location.replace("dashBoard.html");
+      });
+
+    }).catch((error) => {
+
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorMessage);
+
+      // Custom messages for Google specific errors
+      let errorText = "Google login failed.";
+      if (errorCode === 'auth/popup-closed-by-user') {
+        errorText = "The login popup was closed before finishing.";
+      } else if (errorCode === 'auth/invalid-credential') {
+        errorText = "The request configuration is invalid.";
+      }
+
+      // Compact Error Alert for Google Sign-In
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: errorText,
+        width: '300px',
+        heightAuto: true,
+        confirmButtonColor: '#3085d6'
+      });
+
+      const email = error.customData ? error.customData.email : null;
+
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
     });
-
-  }).catch((error) => {
-   
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorMessage);
-    
-    // Custom messages for Google specific errors
-    let errorText = "Google login failed.";
-    if (errorCode === 'auth/popup-closed-by-user') {
-      errorText = "The login popup was closed before finishing.";
-    } else if (errorCode === 'auth/invalid-credential') {
-      errorText = "The request configuration is invalid.";
-    }
-   
-    // Compact Error Alert for Google Sign-In
-    Swal.fire({
-      icon: 'error',
-      title: 'Failed',
-      text: errorText,
-      width: '300px',
-      heightAuto: true,
-      confirmButtonColor: '#3085d6'
-    });
-
-    const email = error.customData ? error.customData.email : null;
-   
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
-  });
 
 
 
@@ -189,7 +222,7 @@ continueGoogleBtn.addEventListener('click', continueWithGoogle);
 
 
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-        window.location.replace("dashBoard.html");
-    }
+  if (user) {
+    window.location.replace("dashBoard.html");
+  }
 });

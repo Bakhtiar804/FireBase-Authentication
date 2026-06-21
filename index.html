@@ -45,7 +45,19 @@
             <form class="auth-form" onsubmit="event.preventDefault();">
                 <div class="input-group">
                     <label>Full Name</label>
-                    <input id="usename" type="text" placeholder="Enter your name" required>
+                    <input id="username" type="text" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input id="signUpPhone" type="tel" placeholder="Enter your phone number">
+                </div>
+                <div class="input-group">
+                    <label>Country</label>
+                    <input id="signUpCountry" type="text" placeholder="Enter your country">
+                </div>
+                <div class="input-group">
+                    <label>Date of Birth</label>
+                    <input id="signUpDOB" type="date" required>
                 </div>
                 <div class="input-group">
                     <label>Email Address</label>
@@ -135,8 +147,6 @@
             document.querySelectorAll('.auth-card').forEach(card => card.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
-        
-        // Testing purpose ke liye direct dashboard check karne ke liye Console me switchScreen('dashboard-screen') likhen.
     </script>
     <script type="module" src="app.js"></script>
 </body>
