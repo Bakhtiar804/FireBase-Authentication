@@ -52,6 +52,26 @@
                     <button type="button" class="btn btn-primary" id="updatePassBtn" style="margin-top: 15px; width: 100%;">Update Password</button>
                 </div>
 
+                <div class="settings-box">
+                    <div class="box-icon"><i class="fa-solid fa-database"></i></div>
+                    <h5>Clear Data</h5>
+                    <p>Wipe your database records while keeping your login account active.</p>
+                    <div style="height: 46px; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 12px; color: #666; text-align: center;">Removes Firestore document data only.</span>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="deleteDataBtn" style="width: 100%;">Delete from Database</button>
+                </div>
+
+                <div class="settings-box">
+                    <div class="box-icon"><i class="fa-solid fa-user-minus"></i></div>
+                    <h5>Delete Login Access</h5>
+                    <p>Permanently terminate your login token from our servers.</p>
+                    <div style="height: 46px; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 12px; color: #666; text-align: center;">Removes Authentication login credentials.</span>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="deleteAuthBtn" style="width: 100%;">Delete Login Access</button>
+                </div>
+
             </div>
         </div>
     </div>

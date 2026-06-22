@@ -497,6 +497,24 @@ h2 {
     background: #4338ca;
 }
 
+
+
+/* Delete Account */
+
+#deleteAccountBtn {
+  background-color :#4f46e5;
+    color: #ffffff;
+    
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* .dlt-box-icon{
+    color: #dc3545; 
+} */
+
 /* Animation */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(15px); }

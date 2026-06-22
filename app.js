@@ -1,4 +1,8 @@
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateEmail, updatePassword, onAuthStateChanged, GoogleAuthProvider, getRedirectResult, signInWithPopup, db, doc, setDoc, collection, addDoc } from "./fireBaseConfig.js";
+import {
+  auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  updateEmail, updatePassword, onAuthStateChanged, GoogleAuthProvider,
+  getRedirectResult, signInWithPopup, db, doc, setDoc, collection, addDoc
+} from "./fireBaseConfig.js";
 
 
 //   Sign Up Info
@@ -23,8 +27,11 @@ let signInPassword = document.getElementById('signInPass');
 
 let signUpBtn = document.getElementById('signUpBtn');
 
+let isSigningUp = false;
 
-const signUp = () => {
+signUpBtn.addEventListener("click", () => {
+
+
 
 
   let email = signUpEmail.value;
@@ -40,22 +47,34 @@ const signUp = () => {
     Email: signUpEmail.value
   }
 
+  isSigningUp = true;
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
+
+
+      // 1. Loading Alert Start (Jaise hi Auth account ban jaye aur DB ka kaam shuru ho)
+    Swal.fire({
+      title: 'Creating Profile...',
+      text: 'Please wait while we set up your database records.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(); // Yeh SweetAlert ka built-in loading animation spinner hai
+      }
+    });
+
       try {
         const user = userCredential.user;
-        const userId = user.uid;
 
-        const newUser = await setDoc(doc(db, "users", userId), {
-          ...signUpUser, userId
+        await setDoc(doc(db, "users", user.uid), {
+          ...signUpUser,
+          userId: user.uid
         });
 
-        setTimeout(() => {  
-          window.location.replace("dashBoard.html");
-        }, 3000);
-        console.log("new user-->", newUser);
 
+      } catch (error) {
+        console.log(error)
+      }
       // Compact Success Alert
       Swal.fire({
         icon: 'success',
@@ -64,21 +83,11 @@ const signUp = () => {
         width: '320px',
         timer: 1500,
         showConfirmButton: false
-      }) .then(() => {
+      }).then(() => {
         window.location.replace("dashBoard.html");
       });
-  
 
-      } catch (error) {
-        console.log(error)
-      }
-
-      // Signed up 
-
-
-
-
-      })
+    })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -102,19 +111,18 @@ const signUp = () => {
 
   document.getElementById('signUpEmail').value = "";
   document.getElementById('signUpPass').value = "";
-}
+  document.getElementById('username').value = "";
+  document.getElementById('signUpPhone').value = "";
+  document.getElementById('signUpCountry').value = "";
+  document.getElementById('signUpDOB').value = "";
 
-let isSignUP = false;
 
-signUpBtn.addEventListener('click', signUp);
-
+});
 
 
 let signInBtn = document.getElementById('signInBtn');
 
 const signIn = () => {
-
-
 
   let email = signInEmail.value;
   let password = signInPassword.value;
@@ -148,7 +156,8 @@ const signIn = () => {
         confirmButtonColor: '#3085d6'
       });
     });
-
+  document.getElementById('signInEmail').value = "";
+  document.getElementById('signInPass').value = "";
 }
 
 
@@ -179,7 +188,7 @@ const continueWithGoogle = () => {
         title: 'Welcome!',
         text: 'Google login successful.',
         width: '300px',
-        timer: 1500,
+        timer: 1000,
         showConfirmButton: false
       }).then(() => {
         window.location.replace("dashBoard.html");
@@ -228,11 +237,11 @@ continueGoogleBtn.addEventListener('click', continueWithGoogle);
 
 
 onAuthStateChanged(auth, (user) => {
-
   const path = window.location.pathname;
-  const isAuthPage = path.endsWith('index.html') || path.endsWith('signUp.html');
+  const isAuthPage = path.endsWith("index.html") || path === "/";
 
-  if (user && isAuthPage && ! isSignUP) {
+  if (user && isAuthPage && !isSigningUp) {
+    console.log("Auto-login triggered safely.");
     window.location.replace("dashBoard.html");
   }
 });
